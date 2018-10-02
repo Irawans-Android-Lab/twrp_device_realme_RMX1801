@@ -18,3 +18,6 @@
 PRODUCT_PACKAGES += \
     charger_res_images \
     charger
+
+# Soong namespaces
+PRODUCT_SOONG_NAMESPACES += $(DEVICE_PATH)
