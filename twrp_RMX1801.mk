@@ -14,22 +14,24 @@
 # limitations under the License.
 #
 
+# Inherit from those products. Most specific first.
+$(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
+$(call inherit-product-if-exists, $(SRC_TARGET_DIR)/product/embedded.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
+$(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
+
+# Inherit from RMX1801 device
+$(call inherit-product, device/realme/RMX1801/device.mk)
+
+# Inherit some common TWRP stuff.
+$(call inherit-product, vendor/twrp/config/common.mk)
+
 # Release name
 PRODUCT_RELEASE_NAME := RMX1801
 
-$(call inherit-product, build/target/product/embedded.mk)
-
-# Inherit from our custom product configuration
-$(call inherit-product, vendor/omni/config/common.mk)
-
-# Charger
-PRODUCT_PACKAGES += \
-    charger_res_images \
-    charger
-
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := RMX1801
-PRODUCT_NAME := omni_RMX1801
+PRODUCT_NAME := twrp_RMX1801
 PRODUCT_BRAND := OPPO
 PRODUCT_MODEL := RMX1801
 PRODUCT_MANUFACTURER := OPPO
@@ -39,6 +41,8 @@ PRODUCT_BUILD_PROP_OVERRIDES += \
     BUILD_PRODUCT=RMX1801 \
     TARGET_DEVICE=RMX1801
 
-# HACK: Set vendor patch level
-PRODUCT_PROPERTY_OVERRIDES += \
-    ro.vendor.build.security_patch=2099-12-31
+# Device path for OEM device tree
+DEVICE_PATH := device/realme/RMX1801
+
+# Inherit from hardware-specific part of the product configuration
+$(call inherit-product, $(DEVICE_PATH)/device.mk)
